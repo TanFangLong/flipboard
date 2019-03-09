@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 from redis import StrictRedis
 from config import config_dict, Config
 from flask_session import Session
@@ -8,6 +9,7 @@ from logging.handlers import RotatingFileHandler
 
 
 db = SQLAlchemy()
+ma = Marshmallow()
 # decode_responses 对取出的数据解码为字符串 (取出的数据为bytes类型)
 redis_store = StrictRedis(host=Config.REDIS_HOST, port=Config.REDIS_PORT, decode_responses=True)
 
@@ -33,5 +35,6 @@ def create_app(config_name):
     Session(app)
     # 初始化数据库类
     db.init_app(app)
+    ma.init_app(app)
 
     return app
